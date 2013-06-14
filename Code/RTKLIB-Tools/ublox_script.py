@@ -15,7 +15,7 @@ ftp.retrlines('LIST')
 
 file = 'paap1580.13S'
 hostPath = '/cors/rinex/2013/158/paap'
-clientPath = '/Code/'
+clientPath = '/home/ruffin/Documents/Data/'
 
 f = open(clientPath + file,'wb')  
 
