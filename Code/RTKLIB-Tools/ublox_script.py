@@ -25,8 +25,8 @@ outdir = '/home/ruffin/Documents/Data/out/'
 server = 'ftp.ngs.noaa.gov'
 hostPath = '/cors/rinex/'
 station = 'paap'
-rnx2rtkp = '/home/ruffin/git/rtklib/app/rnx2rtkp/gcc/rnx2rtkp'
-pos2kml = '/home/ruffin/git/rtklib/app/pos2kml/gcc/pos2kml'
+rnx2rtkp = '/home/ruffin/git/RTKLIB/app/rnx2rtkp/gcc/rnx2rtkp'
+pos2kml = '/home/ruffin/git/RTKLIB/app/pos2kml/gcc/pos2kml'
 google_eartch = '/usr/bin/google-earth'
 
 
@@ -67,7 +67,7 @@ print(dt, end='\n\n')
 corfile = station + tdate.strftime("%j0.%y") + 'o.gz'
 navfile = station + tdate.strftime("%j0.%y") + 'd.Z'
 
-'''
+
 ftp = FTP(server)
 ftp.login()
 print('FTP Login')
@@ -126,7 +126,7 @@ except ftplib.error_perm:
     print('No data files yet')
 
 ftp.quit()
-'''
+
 
 
 #------------------------------------------------------------------------------ 
@@ -134,8 +134,9 @@ ftp.quit()
 #------------------------------------------------------------------------------ 
 subprocess.check_output(['gzip', '-d', '-r', indir])
 
+
 #------------------------------------------------------------------------------ 
-# Decompress downloaded files
+# Sort downloaded files
 #------------------------------------------------------------------------------ 
 os.chdir(indir)
 for file in os.listdir("."):
@@ -156,8 +157,8 @@ print(' '.join(command1))
 subprocess.check_output(command1)
 print(' '.join(command2))
 subprocess.check_output(command2)
-print(' '.join(command3))
-subprocess.check_output(command3)
+# print(' '.join(command3))
+# subprocess.check_output(command3)
 
 
 # print('Starting ublox script\n')
