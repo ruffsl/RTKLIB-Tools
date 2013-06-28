@@ -3,15 +3,16 @@ Created on Jun 26, 2013
 
 @author: ruffin
 '''
-from numpy.core.defchararray import array
-from cProfile import label
 if __name__ == '__main__':
     pass
 import os
 from pylab import *
 from datetime import *
 import numpy as np
-
+# import geopy as gp
+from geopy import geocoders , point
+from geopy import distance
+from geopy.point import Point
 
 
 # str = input("Enter your input: ");
@@ -22,6 +23,9 @@ import numpy as np
 #------------------------------------------------------------------------------ 
 indir = '/home/ruffin/Documents/Data/in/'
 outdir = '/home/ruffin/Documents/Data/out/'
+# k = Point(40.442635758, -79.943065017)
+k = Point(40.443874, -79.945517)
+
 
 #------------------------------------------------------------------------------ 
 # Check output directory can be dumped to
@@ -103,9 +107,17 @@ plot(tdate,sdne, label='sdne')
 plot(tdate,sdeu, label='sdeu')
 plot(tdate,sdun, label='sdun')
 
- 
+dist = np.array([])
+d = distance.distance
+for i in data.T:
+    j = Point(i[1],i[2])
+    dist = np.append(dist, [d(k, j).meters], axis=0)
+# print(dist)
+plot(tdate,dist, label='dist')
+
+# print(lon[0],lat[0])
+
 legend(loc='upper left')
- 
 
 # Save figure using 72 dots per inch
 # savefig("exercice_2.png",dpi=72)
