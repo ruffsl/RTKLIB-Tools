@@ -8,6 +8,8 @@ import os
 from pylab import *
 from datetime import *
 import numpy as np
+import ftplib
+from ftplib import FTP
 
 def checkDir(dir,option):
     """Check Directory""" 
@@ -16,6 +18,7 @@ def checkDir(dir,option):
     if option == 'w':
         if not os.path.exists(dir):
             os.makedirs(dir)
+    print('Checking directory: ' + dir)
     return dir
     
 def findFile(dir,extension):
@@ -24,13 +27,14 @@ def findFile(dir,extension):
     for files in os.listdir("."):
         if files.endswith(extension):
             file = files
-    print('File name base found to be: ' + file, end='\n\n')
+    print('File found: ' + file)
     return file
 
-def parseObsFile(obsFile):
-    """Parses obs file for data"""
+def parsePosFile(posFile):
+    """Parses pos file for data"""
+    print('Parsing file: ' + posFile)
     data = np.zeros([1,14])
-    with open(obsFile, 'r') as f:
+    with open(posFile, 'r') as f:
         for line in f:
             if(line[0]!='%'):
                 tdate = datetime.strptime(line[:23], '%Y/%m/%d %H:%M:%S.%f')
@@ -52,3 +56,27 @@ def parseObsFile(obsFile):
                 data = vstack((data, temp))
     f.closed
     return data
+
+def fetchFiles(ftp, path, dir, key=None):
+    try:
+        ftp.cwd(path)
+        os.chdir(dir)
+        if key == None:
+            list = ftp.nlst()
+        else:
+            list = ftp.nlst(key)
+        for filename in list:
+            haveFile =False
+            for file in os.listdir("."):
+                if file in filename:
+                    haveFile = True
+            if haveFile:
+                print('Found local\n' + filename, end = '\n\n')
+            else:
+                print('Downloading\n' + filename, end = '\n\n')
+                fhandle = open(os.path.join(dir, filename), 'wb')
+                ftp.retrbinary('RETR ' + filename, fhandle.write)
+                fhandle.close()
+        return False
+    except ftplib.error_perm:
+        return True

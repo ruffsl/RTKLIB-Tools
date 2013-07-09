@@ -8,14 +8,23 @@ Created on Jun 14, 2013
 if __name__ == '__main__':
     pass
 
-suffix = 'wow!!!';
-print(suffix)
-print(suffix.endswith(suffix))
+def f(x):
+  y0 = x + 1
+  y1 = x * 3
+  y2 = y0 ** y1
+  return (y0,y1,y2)
+  
+y0,y1,y2 = f(1)
+print(y0,y1,y2)
 
-weight = float(input("How many pounds does your suitcase weigh? "))
-if weight > 50:
-    print("There is a $25 charge for luggage that heavy.")
-print("Thank you for your business.")
+# suffix = 'wow!!!';
+# print(suffix)
+# print(suffix.endswith(suffix))
+# 
+# weight = float(input("How many pounds does your suitcase weigh? "))
+# if weight > 50:
+#     print("There is a $25 charge for luggage that heavy.")
+# print("Thank you for your business.")
 
 # 
 # num = int(ymdhms.split()[0])
