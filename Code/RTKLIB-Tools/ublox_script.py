@@ -10,7 +10,7 @@ import subprocess
 import os, sys
 import locale
 from datetime import datetime
-from fileutils import *
+from file_utils import *
 
 encoding = locale.getdefaultlocale()[1]
 #------------------------------------------------------------------------------ 

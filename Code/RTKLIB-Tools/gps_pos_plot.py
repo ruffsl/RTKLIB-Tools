@@ -3,17 +3,15 @@ Created on Jun 26, 2013
 
 @author: ruffin
 '''
-from mpl_toolkits.mplot3d import Axes3D
-from matplotlib.colors import normalize
-from matplotlib.colorbar import Colorbar
+
 if __name__ == '__main__':
     pass
 # from pylab import *
 from matplotlib import pyplot, mpl
 import numpy as np
 from geopy import point, distance
-
-from fileutils import *
+from plot_utils import *
+from file_utils import *
 
 # str = input("Enter your input: ");
 # print("Received input is : ", str)
@@ -25,7 +23,6 @@ indir = '/home/ruffin/Documents/Data/in/'
 outdir = '/home/ruffin/Documents/Data/out/'
 # reference = point.Point(40.442635758, -79.943065017, 257)
 reference = point.Point(40.443874, -79.945517, 272)
-
 
 #------------------------------------------------------------------------------ 
 # Check output directory can be dumped to
@@ -98,6 +95,36 @@ sd = ['sdn','sde','sdu','sdne','sdeu','sdun']
 sdd = ['distn','diste','distu','distne','disteu','distun']
 sddist = [distn,diste,distu,distne,disteu,distun]
 
+color = colors()
+latmin = lat.min()
+latmax = lat.max()
+lonmin = lon.min()
+lonmax = lon.max()
+
+latdif = latmax - latmin
+londif = lonmax - lonmin
+
+latminlim = lat.min() - latdif*0.1
+latmaxlim = lat.max() + latdif*0.1
+lonminlim = lon.min() - londif*0.1
+lonmaxlim = lon.max() + londif*0.1
+
+distnmin = distn.min()
+distnmax = distn.max()
+distemin = diste.min()
+distemax = diste.max()
+
+distndif = distnmax - distnmin
+distedif = distemax - distemin
+
+distnminlim = distn.min() - distndif*0.1
+distnmaxlim = distn.max() + distndif*0.1
+disteminlim = diste.min() - distedif*0.1
+distemaxlim = diste.max() + distedif*0.1
+
+distmax = dist.max()
+distmin = dist.min()
+distnorm = mpl.colors.Normalize(vmin=-distmax, vmax=0)
 
 #------------------------------------------------------------------------------ 
 # Plot data
@@ -123,13 +150,7 @@ pyplot.legend(loc='upper left')
   
 # Save figure using 72 dots per inch
 # pyplot.savefig("exercice_2.png",dpi=72)
-   
-# # Show result on screen
-# pyplot.show()
 
-distmax = dist.max()
-distmin = dist.min()
-distnorm = mpl.colors.Normalize(vmin=-distmax, vmax=0)
  
 print('Generating Fig 2')
 fig2 = pyplot.figure(figsize=(10,6), dpi=80)
@@ -150,19 +171,6 @@ for i in range(6):
 # # Show result on screen
 # pyplot.show()
 
-color = colors()
-latmin = lat.min()
-latmax = lat.max()
-lonmin = lon.min()
-lonmax = lon.max()
-
-latdif = latmax - latmin
-londif = lonmax - lonmin
-
-latminlim = lat.min() - latdif*0.1
-latmaxlim = lat.max() + latdif*0.1
-lonminlim = lon.min() - londif*0.1
-lonmaxlim = lon.max() + londif*0.1
 
 
 print('Generating Fig 3')
@@ -174,13 +182,13 @@ sd = ['sdn','sde','sdu','sdne','sdeu','sdun']
 for i in range(6):
     sdx = data[i+6]
     ax = fig3.add_subplot(2, 3, i+1)
-    p = ax.scatter(lat,lon, c=-abs(sdx), alpha=.2)
+    p = ax.scatter(distn, diste, c=-abs(sdx), alpha=.2)
     fig3.colorbar(p,norm=distnorm)    
-    xlim(latminlim, latmaxlim)
-    ylim(lonminlim, lonmaxlim)    
-    ax.set_title('Pos w/ ' + sd[i])
-    ax.set_xlabel('lat (deg)')
-    ax.set_ylabel('lon (deg)')
+    xlim(distnminlim, distnmaxlim)
+    ylim(disteminlim, distemaxlim)    
+    ax.set_title('Pos w/ ' + sd[i]) 
+    ax.set_ylabel('North')
+    ax.set_xlabel('East')
     ax.get_xaxis().set_ticks([])
     ax.get_yaxis().set_ticks([])
     ax.grid(True)
@@ -205,12 +213,12 @@ print('Generating Fig 4')
 fig4 = pyplot.figure(figsize=(10,6), dpi=80)
 fig4.suptitle('Position and Standard Distribution', fontsize=14, fontweight='bold')
 ax = fig4.add_subplot(1, 1, 1)
-p = ax.scatter(lat,lon, c=-dist, alpha=.2)
+p = ax.scatter(distn,diste, c=-dist, alpha=.2)
 fig4.colorbar(p, norm=distnorm)
-xlim(latminlim, latmaxlim)
-ylim(lonminlim, lonmaxlim)    
-ax.set_xlabel('lat (deg)')
-ax.set_ylabel('lon (deg)')
+xlim(distnminlim, distnmaxlim)
+ylim(disteminlim, distemaxlim)
+ax.set_xlabel('East (meters)')
+ax.set_ylabel('North (meters)')
 ax.grid(True)
 
 
