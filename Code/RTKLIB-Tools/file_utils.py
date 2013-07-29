@@ -27,8 +27,17 @@ def findFile(dir,extension):
     for files in os.listdir("."):
         if files.endswith(extension):
             file = files
-    print('File found: ' + file)
     return file
+
+def findFiles(dir,extension):
+    os.chdir(dir)
+    allFiles = os.listdir(".")
+    foundFiles = []
+    for file in allFiles:
+        if file.endswith(extension):
+            foundFiles.append(file)
+    return foundFiles
+
 
 def parsePosFile(posFile):
     """Parses pos file for data"""

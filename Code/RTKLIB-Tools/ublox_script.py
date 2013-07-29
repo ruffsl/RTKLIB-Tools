@@ -101,9 +101,9 @@ if fetchFiles(ftp, hostPath, indir, 'igs*'):
 hostPath = hostPath + station
 print('FTP Current Working Directory\n' + hostPath, end='\n\n')
 
-print('FTP List')
-ftp.retrlines('LIST')
-print()
+# print('FTP List')
+# ftp.retrlines('LIST')
+# print()
 
 # print('Fetching station broadcasts')
 if fetchFiles(ftp, hostPath, indir):
