@@ -38,6 +38,15 @@ def findFiles(dir,extension):
             foundFiles.append(file)
     return foundFiles
 
+def findFolders(dir):
+    os.chdir(dir)
+    foundFolders = []
+    allFiles = os.listdir(".")
+    for file in allFiles:
+        if os.path.isdir(file):
+            foundFolders.append(file)
+    return foundFolders
+
 
 def parsePosFile(posFile):
     """Parses pos file for data"""
