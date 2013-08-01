@@ -30,7 +30,7 @@ def convbinFile(dir, file, convbin):
 	#shutil.move(file, dir + filename)
 	shutil.copyfile(file,dir + filename + '/' + file)
 	os.chdir(dir + filename)
-	command = ([convbin, dir + filename + '/' + file])
+	command = ([convbin, dir + filename + '/' + file, '-v', '3.02', '-od', '-os', '-oi', '-ot', '-ol'])
 	print('Running ')
 	print(' '.join(command))
 	subprocess.check_output(command)
@@ -147,16 +147,21 @@ def buildDataFrame(dir, folder):
 	staticPosFile = findFile(dir + folder,'static.pos')
 	kineticPosFile = findFile(dir + folder,'kinetic.pos')
 	
-	with open(kineticPosFile) as search:
-	#with open(staticPosFile) as search:
-	    for i, line in enumerate(search):
-	        if "% ref pos" in line:
-	        	parts = str.split(line)
-	        	refLat = float(parts[4])
-	        	refLon = float(parts[5])
-	        	refElv = float(parts[6])
-	        	break
-	reference = gp.point.Point(refLat, refLon, refElv)
+	skiprow = 0
+	with open(staticPosFile) as search:
+		for i, line in enumerate(search):
+			if "%  GPST" in line:
+				skiprow = i
+				break
+	dff = pd.read_csv(kineticPosFile, skiprows=skiprow, delim_whitespace=True, parse_dates=[[0, 1]])
+	qmin = dff['Q'].min()
+	print('qmin:', qmin)
+	qmins = dff['Q'] == qmin
+	print('qmins:',len(qmins))
+	if (len(qmins) > 1):
+		dff = dff[qmins]
+	reference = gp.point.Point(dff['latitude(deg)'].mean(), dff['longitude(deg)'].mean(), dff['height(m)'].mean())
+	print(folder)
 	print(reference.latitude, reference.longitude, reference.altitude)
 	
 	skiprow = 0
@@ -210,3 +215,44 @@ def buildDataFrame(dir, folder):
 def decompressData(dir):
 	# print('Uncompressing fetched data')
 	subprocess.check_output(['gzip', '-d', '-f', '-r', dir])
+	
+	
+# def readObs(dir,file):
+# 	os.chdir(dir)
+# 	with open(file) as search:
+# 		for i, line in enumerate(search):
+# 			if "%  GPST" in line:
+# 				skiprow = i
+# 				break
+	
+	
+	
+	
+	
+	
+	
+	
+	
+	
+	
+	
+	
+	
+	
+	
+	
+	
+	
+	
+	
+	
+	
+	
+	
+	
+	
+	
+	
+	
+	
+	
