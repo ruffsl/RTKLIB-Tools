@@ -10,6 +10,8 @@ from datetime import *
 import numpy as np
 import ftplib
 from ftplib import FTP
+import urllib.request
+import shutil
 
 def checkDir(dir,option):
     """Check Directory""" 
@@ -75,6 +77,17 @@ def parsePosFile(posFile):
     f.closed
     return data
 
+# def parseObsFile(obsFile):
+#     """Parses RINEX v3.04 obs file for data"""
+#     print('Parsing file: ' + obsFile)
+#     df = pd.Da
+#     data = np.zeros([1,14])
+#     with open(obsFile, 'r') as file:
+#         for line in file:
+#             if(line[0]!='%'):
+#     f.closed
+#     return data
+
 def fetchFiles(ftp, path, dir, key=None):
     try:
         ftp.cwd(path)
@@ -98,3 +111,10 @@ def fetchFiles(ftp, path, dir, key=None):
         return False
     except ftplib.error_perm:
         return True
+
+def getURL(url,dir,filename):
+    # Download the file from `url` and save it locally under `dir/file_name`:
+    #filename = dir+url.split('/')[-1]
+    with urllib.request.urlopen(url) as response, open(dir + filename, 'wb') as out_file:
+        shutil.copyfileobj(response, out_file)
+    

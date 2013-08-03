@@ -216,14 +216,46 @@ def decompressData(dir):
 	# print('Uncompressing fetched data')
 	subprocess.check_output(['gzip', '-d', '-f', '-r', dir])
 	
+def genData(dir, file):
+	dfObs, headerObs = readObs(dir, file)
+	satObs = dfObs['satID'].unique()
+	satObs = [x for x in satObs if not 'S' in x]
 	
-# def readObs(dir,file):
-# 	os.chdir(dir)
-# 	with open(file) as search:
-# 		for i, line in enumerate(search):
-# 			if "%  GPST" in line:
-# 				skiprow = i
-# 				break
+	satlistObs = foo
+	for i in satlistObs:
+		if 
+
+
+def readObs(dir, file):
+    df = pd.DataFrame()
+    #Grab header
+    header = ''
+    with open(dir + file) as handler:
+        for i, line in enumerate(handler):
+            header += line
+            if 'END OF HEADER' in line:
+                break
+    #Grab Data
+    with open(dir + file) as handler:
+        for i, line in enumerate(handler):
+        	#Check for a Timestamp lable
+            if '> ' in line:
+            	#Grab Timestamp
+                links = line.split()
+                index = datetime.strptime(' '.join(links[1:7]), '%Y %m %d %H %M %S.%f0')
+                #Identify number of satellites
+                satNum = int(links[8])
+                #For every sat
+                for j in range(satNum):
+                	#just save the data as a string for now
+                    satData = handler.readline()
+                    #Fix the names
+                    satdId = satData.replace("G ", "G0").split()[0]
+                    #Make a dummy dataframe
+                    dff = pd.DataFrame([[index,satdId,satData]], columns=['%_GPST','satID','satData'])
+                    #Tack it on the end
+                    df = df.append(dff)
+    return df, header
 	
 	
 	
