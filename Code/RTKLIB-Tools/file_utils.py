@@ -20,7 +20,7 @@ def checkDir(dir,option):
     if option == 'w':
         if not os.path.exists(dir):
             os.makedirs(dir)
-    print('Checking directory: ' + dir)
+    #print('Checking directory: ' + dir)
     return dir
     
 def findFile(dir,extension):

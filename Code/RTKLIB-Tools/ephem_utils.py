@@ -26,13 +26,14 @@ def loadTLE(filename):
         l1 = f.readline()
 
     f.close()
-    print("%i satellites loaded into list"%len(satlist))
+    #print("%i satellites loaded into list"%len(satlist))
     return(satlist)
 
 def getSatConsts(satlist, satObs, date, reference):
     constellations = []
     for sat in satlist:
         if sat.name in satObs:
+            #print(sat.name)
             constellation = getSatConst(sat, date, reference)
             constellations.append(constellation)
     return(constellations)
@@ -45,5 +46,5 @@ def getSatConst(sat, date, reference):
     sat.compute(observer)
     sat_alt = np.rad2deg(sat.alt)
     sat_az  = np.rad2deg(sat.az)
-    constellation = [sat.name, sat_alt, sat_az]
+    constellation = ['G' + sat.name, sat_alt, sat_az]
     return(constellation)
