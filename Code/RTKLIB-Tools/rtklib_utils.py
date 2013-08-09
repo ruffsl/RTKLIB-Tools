@@ -142,8 +142,8 @@ def fetchData(dir, file, server, hostPath, station):
 	ftp.quit()
 	
 def buildDataFrame(dir, folder):
-	staticPosFile = findFile(dir + folder,'static.pos')
-	kineticPosFile = findFile(dir + folder,'kinetic.pos')
+	staticPosFile = findFile(dir + folder,'_static.pos')
+	kineticPosFile = findFile(dir + folder,'_kinetic.pos')
 	
 	skiprow = 0
 	with open(staticPosFile) as search:
@@ -151,7 +151,7 @@ def buildDataFrame(dir, folder):
 			if "%  GPST" in line:
 				skiprow = i
 				break
-	dff = pd.read_csv(kineticPosFile, skiprows=skiprow, delim_whitespace=True, parse_dates=[[0, 1]])
+	dff = pd.read_csv(staticPosFile, skiprows=skiprow, delim_whitespace=True, parse_dates=[[0, 1]])
 	qmin = dff['Q'].min()
 	print('qmin:', qmin)
 	qmins = dff['Q'] == qmin
@@ -159,7 +159,6 @@ def buildDataFrame(dir, folder):
 	if (len(qmins) > 1):
 		dff = dff[qmins]
 	reference = gp.point.Point(dff['latitude(deg)'].mean(), dff['longitude(deg)'].mean(), dff['height(m)'].mean())
-	print(folder)
 	print(reference.latitude, reference.longitude, reference.altitude)
 	
 	skiprow = 0
