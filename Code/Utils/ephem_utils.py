@@ -10,7 +10,7 @@ import geopy as gp
 import ephem
 import urllib.request
 import shutil
-from file_utils import *
+from Utils.file_utils import *
 
 def loadTLE(filename):
     """ Loads a TLE file and creates a list of satellites."""

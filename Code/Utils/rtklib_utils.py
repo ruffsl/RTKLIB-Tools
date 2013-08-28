@@ -8,9 +8,9 @@ import shutil
 import subprocess
 import locale
 from ftplib import FTP
-from ephem_utils import *
-from file_utils import *
-from gpstime import *
+from Utils.ephem_utils import *
+from Utils.file_utils import *
+from Utils.gpstime import *
 
 from pandas.lib import Timestamp
 import pandas as pd
